@@ -10,23 +10,23 @@ const TravelPackage = db.define("TravelPackage", {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   date: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   price: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
   maxParticipants: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   remainingVacancies: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
