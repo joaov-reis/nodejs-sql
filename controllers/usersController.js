@@ -12,19 +12,59 @@ const getUsers = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const { name, email, age, phoneNumber, country } = req.body;
+    const { username, password, name, email, age, phoneNumber, country } =
+      req.body;
+
+    if (!checkPassword(password)) {
+      return res.status(400).json({
+        message:
+          "Password must contain at least 8 characters, letters and numbers",
+      });
+    }
+
+    const userTrim = username.trim();
+
+    const userExist = await Users.findOne({
+      where: { username: userTrim },
+    });
+
+    if (userExist) {
+      return res.status(409).json({
+        message: "User already exists",
+      });
+    }
+
     const user = await Users.create({
+      username: userTrim,
+      password,
       name,
       email,
       age,
       phoneNumber,
       country,
     });
-    res.json(user);
+    res.status(201).json({
+      username,
+      email,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
   }
 };
 
-module.exports = { getUsers, addUser };
+function checkPassword(password) {
+  const hasminimunLength = password.length >= 8;
+  const hasnumber = /\d/.test(password);
+  const hasLetter = /[a-zA-Z]/.test(password);
+
+  return hasLetter && hasnumber && hasminimunLength;
+}
+
+const testUrlEncoder = async (req, res) => {
+  const roles = req.body.roles; //encoded true
+  //const roles = req.body['roles[]']  //encoded false
+  res.send(roles);
+};
+
+module.exports = { getUsers, addUser, testUrlEncoder };

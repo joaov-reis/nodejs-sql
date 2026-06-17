@@ -25,14 +25,12 @@ const addtravelpackage = async (req, res) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const { description, price } = req.body;
-    const maxParticipants = 20;
-    const remainingVacancies = maxParticipants;
-
-    const newTravelPackage = await TravelPackage.create(
+    const { description, date, price, maxParticipants, remainingVacancies } =
+      req.body;
+    const travelPackage = await TravelPackage.create(
       {
         description,
-        date: '2024-12-31',
+        date,
         price,
         maxParticipants,
         remainingVacancies,
@@ -42,7 +40,7 @@ const addtravelpackage = async (req, res) => {
     await transaction.commit();
     res.status(201).json({
       message: "Travel package created successfully",
-      data: newTravelPackage,
+      data: travelPackage,
     });
   } catch (error) {
     await transaction.rollback();

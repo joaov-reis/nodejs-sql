@@ -11,6 +11,14 @@ const Enrollment = db.define("Enrollment", {
     autoIncrement: true,
     primaryKey: true,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  travelPackageId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 Enrollment.belongsTo(User);
