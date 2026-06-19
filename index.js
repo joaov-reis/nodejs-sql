@@ -31,6 +31,14 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
+const authorizedUser = (req, res, next) => {
+  if (req.session && req.session.user && req.session.user.role === "ADMIN") {
+    next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
 app.use("/travelpackage", travelpackageRoutes);
 app.use("/enrollments", enrollmentsRoutes);
 
