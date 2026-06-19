@@ -1,5 +1,6 @@
 const express = require("express");
 const conn = require("./database/conn");
+const session = require("./session");
 
 const app = express();
 
@@ -17,12 +18,26 @@ app.use(
     extended: true,
   }),
 );
+
 app.use(express.json());
+
+app.use(session);
+
+const authenticateUser = (req, res, next) => {
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
 
 app.use("/travelpackage", travelpackageRoutes);
 app.use("/enrollments", enrollmentsRoutes);
-app.use("/users", usersRoutes);
+
+app.use("/users", authenticateUser, usersRoutes);
+
 app.use("/login", authenticationRoutes);
+app.use("/logout", authenticationRoutes);
 
 User.hasMany(Enrollment, {
   foreignKey: "userId",
