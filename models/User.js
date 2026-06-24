@@ -1,7 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
-
 const db = require("../database/conn");
-
 const bcrypt = require("bcrypt");
 
 const User = db.define("User", {
@@ -21,7 +19,7 @@ const User = db.define("User", {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING,
@@ -33,19 +31,19 @@ const User = db.define("User", {
   },
   age: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   phoneNumber: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   country: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   role: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     defaultValue: "USER",
   },
 });

@@ -1,7 +1,14 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const Users = require("../models/User");
 const { Op } = require("sequelize");
+
+const {
+  verifyJWT,
+  getToken,
+  invalidateToken,
+} = require("../middlewares/authJWT");
 
 class AuthenticationController {
   static async login(req, res) {
@@ -34,14 +41,15 @@ class AuthenticationController {
         });
       }
 
-      req.session.user = {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      };
+      const token = jwt.sign(
+        { username: user.username, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES },
+      );
 
       res.status(200).json({
         message: "Login OK",
+        token,
       });
     } catch (error) {
       console.error(error);
@@ -54,10 +62,13 @@ class AuthenticationController {
 
   static async logout(req, res) {
     try {
-      req.session.destroy();
+      const token = getToken(req);
+
+      invalidateToken(token);
 
       res.status(200).json({
         message: "Logout OK",
+        token: null,
       });
     } catch (error) {
       console.error("Logout error:", error);
@@ -69,15 +80,9 @@ class AuthenticationController {
   }
 
   static async me(req, res) {
-    if (!req.session || !req.session.user) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
-    }
-
     res.status(200).json({
       authenticated: true,
-      user: req.session.user,
+      user: req.locals.user,
     });
   }
 }

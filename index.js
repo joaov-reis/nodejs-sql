@@ -1,6 +1,7 @@
 const express = require("express");
 const conn = require("./database/conn");
-const session = require("./session");
+//const session = require("./session");
+require("dotenv").config();
 
 const app = express();
 
@@ -21,31 +22,14 @@ app.use(
 
 app.use(express.json());
 
-app.use(session);
-
-const authenticateUser = (req, res, next) => {
-  if (req.session && req.session.user) {
-    next();
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
-  }
-};
-
-const authorizedUser = (req, res, next) => {
-  if (req.session && req.session.user && req.session.user.role === "ADMIN") {
-    next();
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
-  }
-};
+//app.use(session);
 
 app.use("/travelpackage", travelpackageRoutes);
 app.use("/enrollments", enrollmentsRoutes);
+app.use("/users", usersRoutes);
 
-app.use("/users", authenticateUser, usersRoutes);
-
-app.use("/login", authenticationRoutes);
-app.use("/logout", authenticationRoutes);
+app.use("/", authenticationRoutes);
+//app.use("/logout", authenticationRoutes);
 
 User.hasMany(Enrollment, {
   foreignKey: "userId",
