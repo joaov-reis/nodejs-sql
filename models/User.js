@@ -19,7 +19,7 @@ const User = db.define("User", {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
@@ -31,20 +31,24 @@ const User = db.define("User", {
   },
   age: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
   phoneNumber: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   country: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   role: {
     type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "user",
+  },
+  refreshToken: {
+    type: DataTypes.TEXT,
     allowNull: true,
-    defaultValue: "USER",
   },
 });
 

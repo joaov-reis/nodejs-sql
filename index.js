@@ -1,6 +1,5 @@
 const express = require("express");
 const conn = require("./database/conn");
-//const session = require("./session");
 require("dotenv").config();
 
 const app = express();
@@ -22,14 +21,11 @@ app.use(
 
 app.use(express.json());
 
-//app.use(session);
-
 app.use("/travelpackage", travelpackageRoutes);
 app.use("/enrollments", enrollmentsRoutes);
 app.use("/users", usersRoutes);
 
 app.use("/", authenticationRoutes);
-//app.use("/logout", authenticationRoutes);
 
 User.hasMany(Enrollment, {
   foreignKey: "userId",

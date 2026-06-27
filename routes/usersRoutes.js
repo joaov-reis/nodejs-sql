@@ -2,9 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const usersController = require("../controllers/usersController");
+const AuthenticationController = require("../controllers/authController");
 
-router.get("/", usersController.getUsers);
+const { verifyJWT } = require("../middlewares/authJWT");
+const authorizeRole = require("../middlewares/authorizeRole");
+
+router.get("/", verifyJWT, authorizeRole("admin"), usersController.getUsers);
 router.post("/", usersController.addUser);
-router.post("/testEncoder", usersController.testUrlEncoder);
+router.post("/refresh", AuthenticationController.refresh);
 
 module.exports = router;

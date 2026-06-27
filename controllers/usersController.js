@@ -42,6 +42,7 @@ const addUser = async (req, res) => {
       age,
       phoneNumber,
       country,
+      role: "user",
     });
     res.status(201).json({
       username,

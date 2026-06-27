@@ -42,10 +42,31 @@ class AuthenticationController {
       }
 
       const token = jwt.sign(
-        { username: user.username, email: user.email },
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+        },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES },
+        {
+          expiresIn: "15m",
+        },
       );
+
+      const refreshToken = jwt.sign(
+        {
+          id: user.id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        },
+      );
+
+      await user.update({
+        refreshToken,
+      });
 
       res.status(200).json({
         message: "Login OK",
@@ -83,6 +104,45 @@ class AuthenticationController {
     res.status(200).json({
       authenticated: true,
       user: req.locals.user,
+    });
+  }
+
+  static async refresh(req, res) {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        message: "Refresh Token Required",
+      });
+    }
+
+    const user = await Users.findOne({
+      where: {
+        refreshToken,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid Refresh Token",
+      });
+    }
+
+    const newAccessToken = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "15m",
+      },
+    );
+
+    res.status(200).json({
+      token: newAccessToken,
     });
   }
 }

@@ -21,7 +21,6 @@ function verifyJWT(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    //req.user = decoded;
     res.locals.user = decoded;
     next();
   } catch (error) {
