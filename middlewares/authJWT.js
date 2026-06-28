@@ -26,6 +26,7 @@ function verifyJWT(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     res.locals.student = decoded;
+    req.student = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });

@@ -3,7 +3,9 @@ const Course = require("../models/Course");
 
 const getEnrollments = async (req, res) => {
   try {
-    const enrollements = await Enrollments.findAll();
+    const enrollements = await Enrollments.findAll({
+      where: { studentId: req.student.id },
+    });
     res.status(200).json(enrollements);
   } catch (error) {
     console.error(error);
