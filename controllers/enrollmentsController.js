@@ -4,7 +4,7 @@ const Course = require("../models/Course");
 const getEnrollments = async (req, res) => {
   try {
     const enrollements = await Enrollments.findAll();
-    res.json(enrollements);
+    res.status(200).json(enrollements);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
@@ -36,7 +36,7 @@ const addEnrollment = async (req, res) => {
       enrolled,
     });
 
-    res.json(enrollment);
+    res.status(200).json(enrollment);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
@@ -66,14 +66,11 @@ const cancelEnrollment = async (req, res) => {
     enrollment.enrolled = false;
     await enrollment.save();
 
-    return res.json({
-      message: "Enrollment canceled successfully",
-      enrollment,
-    });
+    return res.status(200).json({ message: "Enrollment canceled successfully", enrollment});
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
   }
 };
 
-module.exports = { getEnrollments, addEnrollment };
+module.exports = { getEnrollments, addEnrollment, cancelEnrollment };

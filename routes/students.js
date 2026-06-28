@@ -8,7 +8,7 @@ const { verifyJWT } = require("../middlewares/authJWT");
 const authorizeRole = require("../middlewares/authorizeRole");
 
 router.get("/", verifyJWT, authorizeRole("admin"), studentsController.getStudents);
-router.post("/", studentsController.addUser);
+router.post("/", studentsController.addStudent);
 router.post("/refresh", AuthenticationController.refresh);
 
 module.exports = router;
