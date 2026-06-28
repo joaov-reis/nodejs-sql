@@ -101,7 +101,7 @@ class AuthenticationController {
   static async me(req, res) {
     res.status(200).json({
       authenticated: true,
-      user: req.locals.student,
+      student: res.locals.student,
     });
   }
 

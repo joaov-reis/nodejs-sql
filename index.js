@@ -10,7 +10,7 @@ const studentsRoutes = require("./routes/studentsRoutes");
 const authenticationRoutes = require("./routes/authRoutes");
 
 const Student = require("./models/Student");
-const Courses = require("./models/Course");
+const Course = require("./models/Course");
 const Enrollment = require("./models/Enrollment");
 
 app.use(

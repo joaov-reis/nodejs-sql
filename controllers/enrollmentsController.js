@@ -32,8 +32,7 @@ const addEnrollment = async (req, res) => {
 
     const enrollment = await Enrollments.create({
       studentId,
-      courseId,
-      enrolled,
+      courseId
     });
 
     res.status(200).json(enrollment);
@@ -45,10 +44,10 @@ const addEnrollment = async (req, res) => {
 
 const cancelEnrollment = async (req, res) => {
   try {
-    const { userId, courseId } = req.body;
+    const { studentId, courseId } = req.body;
 
     const enrollment = await Enrollments.findOne({
-      where: { userId, courseId, enrolled: true },
+      where: { studentId, courseId, enrolled: true },
     });
 
     if (!enrollment) {

@@ -43,7 +43,7 @@ Student.beforeCreate(async (student) => {
   console.log(student.password);
   const passwordHash = await bcrypt.hash(student.password, 10);
   console.log(passwordHash);
-  user.password = passwordHash;
+  student.password = passwordHash;
 });
 
 module.exports = Student;

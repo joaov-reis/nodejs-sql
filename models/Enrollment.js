@@ -12,7 +12,7 @@ const Enrollment = db.define("Enrollment", {
     primaryKey: true,
   },
   enrolled: {
-    type: DataTypes.boolean,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   },

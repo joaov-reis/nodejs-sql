@@ -18,10 +18,14 @@ function verifyJWT(req, res, next) {
   if (!token) {
     return res.status(401).json({ message: "No token" });
   }
+  
+  if (list[token]) {
+    return res.status(401).json({ message: "Token invalidated" });
+  }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    res.locals.user = decoded;
+    res.locals.student = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
