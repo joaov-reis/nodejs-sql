@@ -2,8 +2,8 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const db = require("../database/conn");
 
-const User = require("../models/User");
-const TravelPackage = require("../models/TravelPackage");
+const Student = require("../models/Student");
+const Course = require("../models/Course");
 
 const Enrollment = db.define("Enrollment", {
   id: {
@@ -14,7 +14,7 @@ const Enrollment = db.define("Enrollment", {
   enrolled: {
     type: DataTypes.boolean,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: true,
   },
 });
 

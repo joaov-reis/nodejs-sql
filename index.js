@@ -31,12 +31,12 @@ User.hasMany(Enrollment, {
   foreignKey: "userId",
 });
 
-Enrollment.belongsTo(User, {
-  foreignKey: "userId",
-});
-
 Course.hasMany(Enrollment, {
   foreignKey: "courseId",
+});
+
+Enrollment.belongsTo(User, {
+  foreignKey: "userId",
 });
 
 Enrollment.belongsTo(Course, {

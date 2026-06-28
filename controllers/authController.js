@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const Users = require("../models/User");
+const Students = require("../models/Student");
 const { Op } = require("sequelize");
 
 const {
@@ -13,27 +13,25 @@ const {
 class AuthenticationController {
   static async login(req, res) {
     try {
-      const { identifier, password } = req.body;
+      const { email, password } = req.body;
 
-      if (!identifier || !password) {
+      if (!email || !password) {
         return res.status(400).json({
-          message: "User and Password are Required",
+          message: "email and password are required",
         });
       }
 
-      const user = await Users.findOne({
-        where: {
-          [Op.or]: [{ username: identifier }, { email: identifier }],
-        },
+      const student = await Students.findOne({
+        where: { email },
       });
 
-      if (!user) {
+      if (!student) {
         return res.status(401).json({
-          message: "Invalid username",
+          message: "Invalid email",
         });
       }
 
-      const compareResult = await bcrypt.compare(password, user.password);
+      const compareResult = await bcrypt.compare(password, student.password);
 
       if (!compareResult) {
         return res.status(401).json({
@@ -43,10 +41,10 @@ class AuthenticationController {
 
       const token = jwt.sign(
         {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          role: user.role,
+          id: student.id,
+          name: student.name,
+          email: student.email,
+          role: student.role,
         },
         process.env.JWT_SECRET,
         {
@@ -56,7 +54,7 @@ class AuthenticationController {
 
       const refreshToken = jwt.sign(
         {
-          id: user.id,
+          id: student.id,
         },
         process.env.JWT_SECRET,
         {
@@ -64,7 +62,7 @@ class AuthenticationController {
         },
       );
 
-      await user.update({
+      await student.update({
         refreshToken,
       });
 
@@ -103,7 +101,7 @@ class AuthenticationController {
   static async me(req, res) {
     res.status(200).json({
       authenticated: true,
-      user: req.locals.user,
+      user: req.locals.student,
     });
   }
 
@@ -116,13 +114,13 @@ class AuthenticationController {
       });
     }
 
-    const user = await Users.findOne({
+    const student = await Students.findOne({
       where: {
         refreshToken,
       },
     });
 
-    if (!user) {
+    if (!student) {
       return res.status(401).json({
         message: "Invalid Refresh Token",
       });
@@ -130,10 +128,10 @@ class AuthenticationController {
 
     const newAccessToken = jwt.sign(
       {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
+        id: student.id,
+        name: student.name,
+        email: student.email,
+        role: student.role,
       },
       process.env.JWT_SECRET,
       {

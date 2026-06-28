@@ -1,31 +1,26 @@
-const TravelPackage = require("../models/TravelPackage");
+const Course = require("../models/Course");
 
-const gettravelpackage = async (req, res) => {
+const getCourse = async (req, res) => {
   try {
-    const travelPackages = await TravelPackage.findAll();
-    res.json(travelPackages);
+    const courses = await Course.findAll();
+    res.json(courses);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
   }
 };
 
-const addtravelpackage = async (req, res) => {
+const addCourse = async (req, res) => {
   try {
-    const { description, date, price, maxParticipants, remainingVacancies } =
-      req.body;
-    const travelpackage = await TravelPackage.create({
-      description,
-      date,
-      price,
-      maxParticipants,
-      remainingVacancies,
+    const { name } = req.body;
+    const course = await Course.create({
+      name,
     });
-    res.json(travelpackage);
+    res.json(course);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
   }
 };
 
-module.exports = { gettravelpackage, addtravelpackage };
+module.exports = { getCourse, addCourse };
