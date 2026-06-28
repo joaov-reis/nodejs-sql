@@ -6,10 +6,10 @@ const app = express();
 
 const CourseRoutes = require("./routes/courseRoutes");
 const enrollmentsRoutes = require("./routes/enrollmentsRoutes");
-const usersRoutes = require("./routes/students");
+const studentsRoutes = require("./routes/studentsRoutes");
 const authenticationRoutes = require("./routes/authRoutes");
 
-const Student = require("./models/User");
+const Student = require("./models/Student");
 const Courses = require("./models/Course");
 const Enrollment = require("./models/Enrollment");
 
@@ -21,22 +21,22 @@ app.use(
 
 app.use(express.json());
 
-app.use("/Course", CourseRoutes);
+app.use("/course", CourseRoutes);
 app.use("/enrollments", enrollmentsRoutes);
-app.use("/users", usersRoutes);
+app.use("/students", studentsRoutes);
 
 app.use("/", authenticationRoutes);
 
-User.hasMany(Enrollment, {
-  foreignKey: "userId",
+Student.hasMany(Enrollment, {
+  foreignKey: "studentId",
 });
 
 Course.hasMany(Enrollment, {
   foreignKey: "courseId",
 });
 
-Enrollment.belongsTo(User, {
-  foreignKey: "userId",
+Enrollment.belongsTo(Student, {
+  foreignKey: "studentId",
 });
 
 Enrollment.belongsTo(Course, {
