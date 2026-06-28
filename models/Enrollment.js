@@ -11,6 +11,11 @@ const Enrollment = db.define("Enrollment", {
     autoIncrement: true,
     primaryKey: true,
   },
+  enrolled: {
+    type: DataTypes.boolean,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 module.exports = Enrollment;

@@ -2,16 +2,11 @@ const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../database/conn");
 const bcrypt = require("bcrypt");
 
-const User = db.define("User", {
+const Student = db.define("Student", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -29,16 +24,8 @@ const User = db.define("User", {
       isEmail: true,
     },
   },
-  age: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  phoneNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  country: {
-    type: DataTypes.STRING,
+  birthDate: {
+    type: DataTypes.DATE,
     allowNull: false,
   },
   role: {
@@ -52,11 +39,11 @@ const User = db.define("User", {
   },
 });
 
-User.beforeCreate(async (user) => {
-  console.log(user.password);
-  const passwordHash = await bcrypt.hash(user.password, 10);
+Student.beforeCreate(async (student) => {
+  console.log(student.password);
+  const passwordHash = await bcrypt.hash(student.password, 10);
   console.log(passwordHash);
   user.password = passwordHash;
 });
 
-module.exports = User;
+module.exports = Student;

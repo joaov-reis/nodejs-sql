@@ -4,13 +4,13 @@ require("dotenv").config();
 
 const app = express();
 
-const travelpackageRoutes = require("./routes/travelpackageRoutes");
+const CourseRoutes = require("./routes/courseRoutes");
 const enrollmentsRoutes = require("./routes/enrollmentsRoutes");
-const usersRoutes = require("./routes/usersRoutes");
+const usersRoutes = require("./routes/students");
 const authenticationRoutes = require("./routes/authRoutes");
 
-const User = require("./models/User");
-const TravelPackage = require("./models/TravelPackage");
+const Student = require("./models/User");
+const Courses = require("./models/Course");
 const Enrollment = require("./models/Enrollment");
 
 app.use(
@@ -21,7 +21,7 @@ app.use(
 
 app.use(express.json());
 
-app.use("/travelpackage", travelpackageRoutes);
+app.use("/Course", CourseRoutes);
 app.use("/enrollments", enrollmentsRoutes);
 app.use("/users", usersRoutes);
 
@@ -35,12 +35,12 @@ Enrollment.belongsTo(User, {
   foreignKey: "userId",
 });
 
-TravelPackage.hasMany(Enrollment, {
-  foreignKey: "travelPackageId",
+Course.hasMany(Enrollment, {
+  foreignKey: "courseId",
 });
 
-Enrollment.belongsTo(TravelPackage, {
-  foreignKey: "travelPackageId",
+Enrollment.belongsTo(Course, {
+  foreignKey: "courseId",
 });
 
 conn
