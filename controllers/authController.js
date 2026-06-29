@@ -69,7 +69,9 @@ class AuthenticationController {
       res.status(200).json({
         message: "Login OK",
         token,
+        name: student.name
       });
+      
     } catch (error) {
       console.error(error);
 

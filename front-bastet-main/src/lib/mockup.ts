@@ -1,5 +1,5 @@
 export type Curso = {
-  id: string;
+  id: number;
   nome: string;
   descricao: string;
   capa: string;
@@ -9,36 +9,19 @@ export type Curso = {
   inscrito?: boolean;
 };
 
-export type Usuario = {
-  nome: string;
-  email: string;
-  senha: string;
-  nascimento: Date;
-};
-
-export const UsurioMockup: Usuario[] = [
-    {
-        email: "teste@email.com",
-        nascimento: new Date(1990,4,31),
-        nome: "Jason McGaiver",
-        senha: "1234"
-    }
-]
-
 export const CursosMockup: Curso[] = [
   {
-    id: "dev-web-react-nextjs",
+    id: 2,
     nome: "Desenvolvimento Web com React e Next.js",
     descricao:
       "Aprenda a criar websites modernos e interativos com as tecnologias mais populares do mercado.",
     capa: "https://img-c.udemycdn.com/course/240x135/4160208_71be_5.jpg",
     inscricoes: 1234,
     inicio: new Date(2024, 5, 20),
-    inscricao_cancelada: true,
-    inscrito: true
+    inscricao_cancelada: false,
   },
   {
-    id: "intro-ia",
+    id: 3,
     nome: "Introdução à Inteligência Artificial",
     descricao:
       "Descubra os fundamentos da Inteligência Artificial e suas aplicações no mundo real.",
@@ -47,7 +30,7 @@ export const CursosMockup: Curso[] = [
     inicio: new Date(2024, 6, 15),
   },
   {
-    id: "foto-iniciantes",
+    id: 5,
     nome: "Fotografia para Iniciantes",
     descricao:
       "Aprenda os princípios básicos da fotografia e tire fotos incríveis com seu celular ou câmera.",
@@ -56,7 +39,7 @@ export const CursosMockup: Curso[] = [
     inicio: new Date(2024, 7, 10),
   },
   {
-    id: "ingles-instrumental",
+    id: 6,
     nome: "Inglês Instrumental para o Mercado de Trabalho",
     descricao:
       "Aprimore suas habilidades de comunicação em inglês e prepare-se para os desafios do mercado profissional.",
@@ -64,10 +47,9 @@ export const CursosMockup: Curso[] = [
     inscricoes: 13579,
     inicio: new Date(2024, 8, 5),
     inscricao_cancelada: false,
-    inscrito: true
   },
   {
-    id: "financas-iniciantes",
+    id: 7,
     nome: "Finanças Pessoais para Iniciantes",
     descricao:
       "Aprenda a gerenciar seu dinheiro de forma inteligente e alcançar seus objetivos financeiros.",
@@ -76,7 +58,7 @@ export const CursosMockup: Curso[] = [
     inicio: new Date(2024, 9, 1),
   },
   {
-    id: "culinaria-vegetariana",
+    id: 8,
     nome: "Culinária Vegetariana",
     descricao:
       "Descubra o mundo da culinária vegetariana com receitas deliciosas e nutritivas.",
@@ -84,10 +66,9 @@ export const CursosMockup: Curso[] = [
     inscricoes: 21947,
     inicio: new Date(2024, 9, 20),
     inscricao_cancelada: false,
-    inscrito: true
   },
   {
-    id: "yoga-iniciantes",
+    id: 9,
     nome: "Yoga para Iniciantes",
     descricao:
       "Aprenda os princípios básicos da yoga e melhore sua flexibilidade, força e bem-estar.",
@@ -96,7 +77,7 @@ export const CursosMockup: Curso[] = [
     inicio: new Date(2024, 10, 15),
   },
   {
-    id: "produtividade-pessoal",
+    id: 10,
     nome: "Produtividade Pessoal",
     descricao:
       "Aprenda técnicas para gerenciar seu tempo, organizar suas tarefas e aumentar sua produtividade.",

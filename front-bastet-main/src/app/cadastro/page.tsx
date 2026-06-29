@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 export default function Page() {
-  async function handleSubmit(event) {
+  async function handleSubmit(event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) {
     event.preventDefault(); // Impede a página de recarregar do jeito antigo
 
     const formData = new FormData(event.currentTarget);
@@ -30,7 +30,7 @@ export default function Page() {
 
   return (
     <main>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="p-6 bg-indigo-50 max-w-96 rounded-3xl flex flex-col gap-4">
         <h2 className="page-title">Cadastro</h2>
         <p>
           Eu já tenho cadastro, quero <Link href="/login">fazer login.</Link>
