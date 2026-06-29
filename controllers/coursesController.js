@@ -12,9 +12,10 @@ const getCourse = async (req, res) => {
 
 const addCourse = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, description } = req.body;
     const course = await Course.create({
       name,
+      description,
     });
     res.json(course);
   } catch (error) {

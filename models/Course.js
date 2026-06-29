@@ -12,10 +12,10 @@ const Course = db.define("Course", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  // description: {
-  //   type: DataTypes.STRING,
-  //   allowNull: true,
-  // },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  }
   // Participants: {
   //   type: DataTypes.INTEGER,
   //   allowNull: true,
