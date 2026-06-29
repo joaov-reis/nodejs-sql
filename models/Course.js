@@ -16,14 +16,6 @@ const Course = db.define("Course", {
     type: DataTypes.STRING,
     allowNull: true,
   }
-  // Participants: {
-  //   type: DataTypes.INTEGER,
-  //   allowNull: true,
-  // },
-  // remainingVacancies: {
-  //   type: DataTypes.INTEGER,
-  //   allowNull: true,
-  // },
 });
 
 module.exports = Course;
