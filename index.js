@@ -1,8 +1,15 @@
 const express = require("express");
 const conn = require("./database/conn");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 
 const CourseRoutes = require("./routes/courseRoutes");
 const enrollmentsRoutes = require("./routes/enrollmentsRoutes");

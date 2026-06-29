@@ -1,149 +1,91 @@
 import { UsurioMockup, type Curso, type Usuario } from "./mockup";
-import router from '@/config/routes'
+import router from "@/config/routes";
+import { api } from "./api";
 
-const MOCKED = router.root === '#';
+export async function getSession() {
+  try {
+    const token = localStorage.getItem("token");
 
-async function request(path:string, options : {
-    method?: string,
-    body?: any
-} = { method: "GET" }){
-    const url = `${ router.root }${ path }`;
-    return await fetch( url, options ).then( async (res) => await res.json() ).catch( err => { error: err.message });
+    if (!token) {
+      throw new Error("No token");
+    }
+
+    const res = await api.get("/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    return {
+      authenticated: false,
+      student: null,
+    };
+  }
 }
 
-export async function getSession() : Promise< any >{
-    try {
-        throw new Error("TODO");
-        return {
-            "authorization": "JWT TOKEN AQUI"
-        }
-    } catch (error) {
-        return UsurioMockup[0]
-    }
+export async function CreateUser(data: {
+  name: string;
+  email: string;
+  password: string;
+  birthDate: string;
+}) {
+  const res = await api.post("/students", data);
+  return res.data;
 }
 
-export async function CreateUser({ nome, email, senha, nascimento } : Usuario ) : Promise<Usuario | any>{
-    try {
-        const result = await request( router["criar-usuario"]() , {
-            method: "POST",
-            body: {
-                nome,
-                email,
-                senha,
-                nascimento
-            }
-        });
-
-        if( result.error ){
-            throw new Error( result.error );
-        }
-
-        return result
-    } catch (error) {
-        if(MOCKED){
-            return UsurioMockup[0]
-        }else{
-            return {
-                statusCode: 400,
-                mensagem: "Erro ao criar usuário"
-            }
-        }
-    }
+export async function Login(data: { email: string; senha: string }) {
+  try {
+    const res = await api.post("/login", data);
+    return res.data;
+  } catch {
+    return {
+      statusCode: 400,
+      mensagem: "Erro ao fazer login",
+    };
+  }
 }
 
-export async function Login({ email, senha } : { email: string, senha : string }){
-    try {
-        const result = await request( router["login"]() , {
-            method: "POST",
-            body: { email, senha }
-        });
+export async function ListarCursos({ filtro }: { filtro?: string }) {
+  const res = await api.get("/course", {
+    params: filtro ? { filtro } : undefined,
+  });
 
-        if( result.error ){
-            throw new Error( result.error );
-        }
-
-        return result
-    } catch (error) {
-        if(MOCKED){
-            return UsurioMockup[0]
-        }else{
-            return {
-                statusCode: 400,
-                mensagem: "Erro ao fazer login"
-            }
-        }
-    }
+  return res.data;
 }
 
-export async function ListarCursos({ filtro } : { filtro?: string }){
-    try{
-        const result = await request( router["listar-cursos"]( filtro ));
+export async function Inscricao({
+  studentId,
+  courseId,
+}: {
+  studentId: string;
+  courseId: string;
+}) {
+  const res = await api.post("/enrollments", {
+    studentId,
+    courseId,
+  });
 
-        if( result.error ){
-            throw new Error( result.error );
-        }
-
-        return result
-    }
+  return res.data;
 }
 
-export async function Inscricao({ idCurso } : { idCurso : string }){
-    const status_code : number = 400;
-    const result : any = {}
+export async function Cancelar({
+  studentId,
+  courseId,
+}: {
+  studentId: string;
+  courseId: string;
+}) {
+  const res = await api.patch("/enrollments", {
+    studentId,
+    courseId,
+  });
 
-    throw new Error("TODO");
-
-    if( status_code == 404 ){
-        return {
-            error: "Curso não existe."
-        };
-    }else if( status_code == 403 ){
-        return {
-            error: "Usuário precisa estar logado para se inscrever."
-        };
-    }else if( status_code != 200 ){
-        return {
-            error: result?.mensagem
-        };
-    }else{
-        return result
-    }
+  return res.data;
 }
 
-export async function Cancelar({ idCurso } : { idCurso : string }){
-    const status_code : number = 400;
-    const result : any = {}
-
-    throw new Error("TODO");
-
-    if( status_code == 404 ){
-        return {
-            error: "Curso não existe."
-        };
-    }else if( status_code == 403 ){
-        return {
-            error: "Usuário precisa estar logado para cancelar inscrição."
-        };
-    }else if( status_code != 200 ){
-        return {
-            error: result?.mensagem
-        };
-    }else{
-        return result
-    }
-}
-
-export async function MeusCursos({ idUsuario }:{ idUsuario : string }){
-    const status_code : number = 400;
-    const result : Curso[] = []
-
-    throw new Error("TODO");
-    
-    if( status_code == 403 ){
-        return {
-            error: "Usuário só pode ver os próprios cursos."
-        };
-    }else{
-        return result
-    }
+export async function MeusCursos() {
+  const res = await api.get("/enrollments");
+  return res.data;
 }
